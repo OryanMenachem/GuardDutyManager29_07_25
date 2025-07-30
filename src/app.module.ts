@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ShiftsModule } from './shifts/shifts.module';
 import { AssignmentsModule } from './assignments/assignments.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { AuthModule } from './auth/auth.module';
+import {User} from './users/entities/users.entity'
 
 @Module({
   imports: [
@@ -21,10 +21,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 3306,
       username: 'root',
       password: '',
-      database: 'guards_management',
+      database: 'shifts',
       // autoLoadEntities: true,
+      entities:[User],
       synchronize: true,
-    }),
+    })
   ],
   controllers: [AppController],
   providers: [AppService]
