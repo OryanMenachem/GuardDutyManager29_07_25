@@ -7,6 +7,10 @@ export class ShiftsController {
         private readonly shiftsService: ShiftsService
     ) {}
 
+    /**
+     * curl -X POST http://localhost:3000/shifts/add -H "Content-Type: application/json" -d '{"startTime":"2024-06-01T08:00:00Z","endTime":"2024-06-01T16:00:00Z","description":"Morning shift","location":"Tel Aviv"}'
+     */
+
     @Post('add')
     async createShift(
         @Body('startTime') startTime: string,

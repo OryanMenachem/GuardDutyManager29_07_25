@@ -7,6 +7,8 @@ import { AssignmentsModule } from './assignments/assignments.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import {User} from './users/entities/users.entity'
+import { Shift } from './shifts/entities/shift.entity';
+import { Assignment } from './assignments/entities/assignment.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import {User} from './users/entities/users.entity'
       password: '',
       database: 'shifts',
       // autoLoadEntities: true,
-      entities:[User],
+      entities:[User,Shift, Assignment],
       synchronize: true,
     })
   ],

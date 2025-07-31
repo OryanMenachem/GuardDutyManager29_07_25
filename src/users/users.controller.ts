@@ -54,8 +54,9 @@ export class UsersController {
                 return { message: 'Invalid credentials' };
             }
             // Token creation
-            const { access_token } = await this.authService.login(user);
+            const { access_token } = await this.authService.logIn(user);
             return { message: 'Login successful', user, access_token };
         }
     }
+
 }

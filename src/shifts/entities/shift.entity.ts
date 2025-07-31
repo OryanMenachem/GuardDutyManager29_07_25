@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Assignment } from '../../assignments/entities/assignment.entity';
 
 @Entity('shift')
 export class Shift {
@@ -18,9 +19,18 @@ export class Shift {
   endTime: string;
 
   @Column({
+    type: 'text',
+    nullable: false
+  })
+  description: string;
+
+  @Column({
     type: 'varchar',
     length: 255,
     nullable: false
   })
   location: string;
+
+  @OneToMany(() => Assignment, (assignment) => assignment.shiftId)
+  assignments: Assignment[];
 }
