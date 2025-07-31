@@ -1,5 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Put, ParseIntPipe } from '@nestjs/common';
 import { ShiftsService } from './shifts.service';
+import {CreateShiftDto} from './dto/create-shift.dto';
+import {UpdateShiftDto} from './dto/update-shift.dto';
 
 @Controller('shifts')
 export class ShiftsController {
@@ -13,23 +15,48 @@ export class ShiftsController {
 
     @Post('add')
     async createShift(
-        @Body('startTime') startTime: string,
-        @Body('endTime') endTime: string,
-        @Body('description') description: string,
-        @Body('location') location: string
+        @Body() createShiftDto: CreateShiftDto
     ) {
-        if (!startTime) {
-            throw new Error('startTime is required');
-        }
-        if (!endTime) {  
-            throw new Error('endTime is required');
-        }
-        if (!description) {
-            throw new Error('description is required');
-        }
-        if (!location) {
-            throw new Error('location is required');
-        }
-        return await this.shiftsService.createShift(startTime, endTime, description, location);
+        const { startTime, endTime, description, location } = createShiftDto;
+        return await this.shiftsService.createShiftById(startTime, endTime, description, location);
     }
+
+
+    @Get()
+    async findAllShifts() {
+        return await this.shiftsService.findAllShifts();
+    }
+
+    @Get(':id')
+    async findShiftById(@Param('id', ParseIntPipe) id: number) {
+        
+        if (isNaN(id)) {
+            throw new Error('Invalid shift id');
+        }
+        return await this.shiftsService.findShiftById(id);
+    }
+
+    @Put(':id')
+    async updateShiftById(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateShiftDto: UpdateShiftDto
+    ) {
+        if (isNaN(id)) {
+            throw new Error('Invalid shift id');
+        }
+        return await this.shiftsService.updateShiftById(id, updateShiftDto);
+    }
+
+    @Post('delete/:id')
+    async deleteShiftById(@Param('id') id: string) {
+        const shiftId = parseInt(id, 10);
+        if (isNaN(shiftId)) {
+            throw new Error('Invalid shift id');
+        }
+        await this.shiftsService.deleteShiftById(shiftId);
+        return { message: 'Shift deleted successfully' };
+    }
+
+
+    
 }
