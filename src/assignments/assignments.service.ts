@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { Assignment } from './entities/assignment.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 
 @Injectable()
 export class AssignmentsService {
-    helloFromAssignments(): string {
-        return 'Hello from Assignments!';
-      }
+  constructor(
+    @InjectRepository(Assignment)
+    private assignmentsRepository: Repository<Assignment>,
+  ) {}
+    findAllByUserId(userId: number): Promise<Assignment[]> {
+        return this.assignmentsRepository.find({ where: { userId } });
+    }
 }
