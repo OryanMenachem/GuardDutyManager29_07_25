@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import {AssignmentsService} from './assignments.service';
+import { Assignment } from './entities/assignment.entity';
 
 
 
@@ -9,9 +10,10 @@ export class AssignmentsController {
 
      constructor(private readonly assignmentsService : AssignmentsService ) {}
 
-     @Get()
-     helloFromAssignments(): string {
-          return this.assignmentsService.helloFromAssignments();
-        }
+     @Get(':id')
+     async getAssignmentsByUserId(@Param('id') id: string): Promise<Assignment[]> {
+         const userId = parseInt(id, 10);
+         return this.assignmentsService.findAllByUserId(userId);
+     }
      
 }
