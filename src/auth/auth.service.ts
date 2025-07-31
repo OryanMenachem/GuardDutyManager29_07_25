@@ -24,12 +24,12 @@ export class AuthService {
   }
 
   
-  async signIn(
+  async signUp(
     username: string,
-    pass: string,
+    password: string,
   ): Promise<{ access_token: string }> {
-    const user = await this.usersService.findOne(username, pass);
-    if (user?.password !== pass) {
+    const user = await this.usersService.findOne(username, password);
+    if (user?.password !== password) {
       throw new UnauthorizedException();
     }
     const payload = { sub: user.id, username: user.name, role : user.role };
@@ -40,7 +40,7 @@ export class AuthService {
 
 
 
-  async login(
+  async logIn(
     user: User
   ): Promise<{ access_token: string }> {
     const foundUser = await this.usersService.findOne(user.name, user.password);
@@ -48,9 +48,6 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
     const payload = { sub: foundUser.id, username: foundUser.name, role: foundUser.role };
-    console.log('Payload before signing:', payload);
-    console.log('Type:', typeof payload);
-    console.log(this.jwtService);
 
     return {
       access_token: await this.jwtService.signAsync(payload),

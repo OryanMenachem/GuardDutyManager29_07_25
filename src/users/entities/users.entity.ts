@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
+import { Assignment } from '../../assignments/entities/assignment.entity';
 
 @Entity('user')
 export class User {
@@ -12,7 +13,6 @@ export class User {
   })
   name: string;
 
-  
   @Column({
     type: 'varchar',
     length: 255,
@@ -27,5 +27,8 @@ export class User {
     default: 'user'
   })
   role: string;
+
+  @OneToMany(() => Assignment, (assignment) => assignment.userId)
+  assignments: Assignment[];
 
 }
